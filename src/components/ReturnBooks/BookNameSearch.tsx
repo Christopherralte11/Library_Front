@@ -25,12 +25,11 @@ interface DuePendingTableProps {
 
 function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20); // Default to 20
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [searchText, setSearchText] = useState("");
 
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
-  // Handle pagination
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -42,18 +41,17 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
     setPage(0);
   };
 
-  // Handle search
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
 
-  // Filter issues based on search query
   const filteredIssues = issues.filter(
     (issue) =>
       issue.title_of_the_book
         ?.toLowerCase()
         .includes(searchText.toLowerCase()) ||
-      issue.student_name?.toLowerCase().includes(searchText.toLowerCase())
+      issue.student_name?.toLowerCase().includes(searchText.toLowerCase()) ||
+      issue.accession_no?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const paginatedIssues = filteredIssues.slice(
@@ -61,9 +59,8 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
     page * rowsPerPage + rowsPerPage
   );
 
-  // Handle back button click (navigate to previous page)
   const handleBack = () => {
-    navigate(-1); // Navigate to the previous page
+    navigate(-1);
   };
 
   return (
@@ -75,15 +72,15 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
           backgroundColor: "#333333",
           color: "#ffffff",
           padding: "10px 16px",
-          borderRadius: "0 10px 10px 0", // Right border radius only
+          borderRadius: "0 10px 10px 0",
           marginBottom: 2,
-          width: "187px", // Fixed width
-          height: "44px", // Fixed height
-          marginLeft: "-40px", // Moved further to the left (marked place)
-          cursor: "pointer", // Make the entire box clickable
+          width: "187px",
+          height: "44px",
+          marginLeft: "-40px",
+          cursor: "pointer",
           mt: "-140px",
         }}
-        onClick={handleBack} // Handle the back button click
+        onClick={handleBack}
       >
         <IconButton sx={{ color: "#ffffff", marginLeft: "-15px" }}>
           <ArrowBackIcon sx={{ fontSize: "20px" }} />
@@ -93,12 +90,11 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
         </Typography>
       </Box>
 
-      {/* Centered Search Bar */}
       <Box
         sx={{ display: "flex", justifyContent: "center", mb: 2, mt: "150px" }}
       >
         <TextField
-          placeholder="Search by Book Name"
+          placeholder="Search by Book Name, Student or Accession No"
           variant="outlined"
           value={searchText}
           onChange={handleSearch}
@@ -143,9 +139,8 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
           fontFamily: "Poppins, sans-serif",
         }}
       >
-        {/* Pagination on top */}
         <TablePagination
-          rowsPerPageOptions={[20, 50, 100, 200]} // Only these options
+          rowsPerPageOptions={[20, 50, 100, 200]}
           component="div"
           count={filteredIssues.length}
           rowsPerPage={rowsPerPage}
@@ -174,6 +169,7 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
                 {[
                   "#",
                   "Book Title",
+                  "Accession No",
                   "Student Name",
                   "Issued On",
                   "Due Date",
@@ -217,6 +213,7 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
                     {[
                       page * rowsPerPage + index + 1,
                       issue.title_of_the_book,
+                      issue.accession_no,
                       issue.student_name,
                       issue.issued_on,
                       issue.due_date,
@@ -227,11 +224,11 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
                         key={i}
                         sx={{
                           fontFamily: "Poppins, sans-serif",
-                          fontWeight: i === 6 ? "bold" : "normal",
+                          fontWeight: i === 7 ? "bold" : "normal",
                           color:
-                            i === 5 && issue.overdue !== "No"
+                            i === 6 && issue.overdue !== "No"
                               ? "red"
-                              : i === 6
+                              : i === 7
                               ? issue.status === "Pending"
                                 ? "orange"
                                 : "green"
@@ -248,7 +245,7 @@ function BookNameSearch({ issues, setSelectedIssue }: DuePendingTableProps) {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={7}
+                    colSpan={8}
                     align="center"
                     sx={{ paddingY: "10px" }}
                   >

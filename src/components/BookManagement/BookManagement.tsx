@@ -1,4 +1,3 @@
-// BookManagement.tsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
@@ -12,7 +11,8 @@ import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import AddBookDialog from "./AddBookDialog";
 import Fabs from "./Fabs";
 import { api } from "../../api/api";
-import { useAuth } from "../../context/AuthContext"; // Adjust path if needed
+import { useAuth } from "../../context/AuthContext";
+import { useScanner } from "../useScanner"; // Scanner hook
 
 function BookManagement() {
   const { isAuthenticated, role, token, logout } = useAuth();
@@ -46,8 +46,6 @@ function BookManagement() {
       fetchBooks();
     } else {
       toast.error("You must be logged in to access this page.");
-      // Optionally redirect or logout
-      // logout();
     }
   }, [isAuthenticated]);
 
@@ -55,7 +53,7 @@ function BookManagement() {
     try {
       const response = await fetch(`${api}/books/all_books`, {
         headers: {
-          Authorization: `Bearer ${token}`, // send token if API needs auth
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.json();
@@ -255,6 +253,17 @@ function BookManagement() {
       });
   };
 
+  // Scanner logic - updates accession_no and opens AddBookDialog
+  useScanner({
+    onAccessionScan: (accessionNo) => {
+      setBook((prev) => ({
+        ...prev,
+        accession_no: accessionNo,
+      }));
+      setOpenDialog(true);
+    },
+  });
+
   if (!isAuthenticated) {
     return (
       <Box sx={{ padding: 3, mt: 10 }}>
@@ -268,7 +277,6 @@ function BookManagement() {
   return (
     <ResponsiveDrawer>
       <Box sx={{ padding: 3, height: "100%", width: "100%", mt: "50px" }}>
-        {/* Back Button and Title */}
         <Box
           sx={{
             display: "flex",

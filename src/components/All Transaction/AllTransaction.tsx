@@ -115,7 +115,9 @@ function AllTransaction() {
     setSearchQuery(query);
 
     const filtered = transactions.filter((transaction) =>
-      `${transaction.title_of_the_book} ${transaction.student_name}`
+      `${transaction.title_of_the_book} ${transaction.student_name} ${
+        transaction.accession_no || ""
+      }`
         .toLowerCase()
         .includes(query)
     );
@@ -173,7 +175,7 @@ function AllTransaction() {
           sx={{ display: "flex", justifyContent: "center", mb: 2, mt: "8px" }}
         >
           <TextField
-            placeholder="Search by Title or Name"
+            placeholder="Search by Title, Name, or Accession No."
             variant="outlined"
             value={searchQuery}
             onChange={handleSearch}

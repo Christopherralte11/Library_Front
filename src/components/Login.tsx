@@ -83,8 +83,8 @@ const AdminLogin: React.FC = () => {
             <Box sx={{ marginTop: "15px" }}>
               <a href="/">
                 <img
-                  src="/Image/events/logo.png"
-                  style={{ width: "100%", maxWidth: "102px" }}
+                  src="/Hereus-Logo-2.0-blue-small.png"
+                  style={{ width: "100%", maxWidth: "50px" }}
                   alt="Logo"
                 />
               </a>
